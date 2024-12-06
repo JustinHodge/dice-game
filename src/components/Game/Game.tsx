@@ -1,28 +1,19 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Board } from '../Board/Board';
-import { IBoardSpace } from '../../types';
+import { PlayerList } from '../PlayerList/PlayerList';
+import { StartGame } from '../StartGame/StartGame';
+import { IGameData } from '../../types';
 
 export const Game = () => {
-    const BOARD_DIMENSIONS = { x: 8, y: 8 };
-    const [boardData, setBoardData] = useState<IBoardSpace[]>([]);
+    const [gameData, setGameData] = useState<IGameData>();
 
-    useEffect(() => {
-        const initialBoardData = [];
-        for (let i = 0; i < BOARD_DIMENSIONS.x; i++) {
-            for (let j = 0; j < BOARD_DIMENSIONS.y; j++) {
-                initialBoardData.push({
-                    occupant: null,
-                });
-            }
-        }
-
-        setBoardData(initialBoardData);
-    }, [BOARD_DIMENSIONS.x, BOARD_DIMENSIONS.y]);
-
-    return (
+    return gameData ? (
         <>
-            <Board boardData={boardData} />
+            <PlayerList players={gameData.players} />
+            <Board boardData={gameData.boardData} />
         </>
+    ) : (
+        <StartGame setGameData={setGameData} />
     );
 };
 
